@@ -1,0 +1,56 @@
+
+- name: Git checkout
+  ansible.builtin.git:
+    repo: 'https://github.com/strelov1/hexlet-ci-cd-app'
+    dest: "{{ BASE_PATH }}/build/{{ VERSION }}"
+    version: master
+  tags: 
+    - deploy
+
+- name: Install deps
+  shell: "npm install"
+  args:
+    chdir: "{{ BASE_PATH }}/build/{{ VERSION }}"
+  tags: 
+    - deploy
+    
+- name: Stop application
+  shell: "pm2 stop pm2.config.js"
+  args:
+    chdir: "{{ BASE_PATH }}/current"
+  ignore_errors: yes
+  tags: 
+    - deploy
+    - rollback
+
+- name: Drop link
+  shell: "rm current"
+  args:
+    chdir: "{{ BASE_PATH }}"
+  ignore_errors: yes
+  tags: 
+    - deploy
+    - rollback
+
+- name: Create link
+  shell: "ln -s {{ BASE_PATH }}/build/{{ VERSION }} current"
+  args:
+    chdir: "{{ BASE_PATH }}"
+  ignore_errors: yes
+  tags: 
+    - deploy
+    - rollback
+
+- name: Template a file to pm2.config.js.tpl
+  template:
+    src: pm2.config.js.tpl
+    dest: "{{ BASE_PATH }}/current/pm2.config.js"
+  tags: 
+    - deploy
+
+- name: Run appication
+  shell: "pm2 start pm2.config.js"
+  args:
+    chdir: "{{ BASE_PATH }}/current"
+  tags: 
+    - deploy

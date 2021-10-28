@@ -1,0 +1,21 @@
+
+- name: Install git
+  yum:
+    name: git
+    state: latest
+  tags: 
+    - install
+
+
+- name: Install nodejs
+  yum:
+    name: nodejs
+    state: latest
+  tags: 
+    - install
+
+
+- name: Install pm2
+  shell: "npm install pm2 -g"
+  tags: 
+    - install

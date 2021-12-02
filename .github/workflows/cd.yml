@@ -17,4 +17,5 @@ jobs:
           options: |
             --inventory host.ini
             --verbose
+            --extra-vars "ENV=dev VERSION=1"
             --tags "deploy"

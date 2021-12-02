@@ -9,6 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy
-        uses: actions/ansible-cli-action@latest
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
         with:
-          command: "make deploy"
+          playbook: main.yml
+          directory: ./
+          vault_password: ${{secrets.ANSIBLE_VAULT}}
+          options: |
+            --inventory host.ini
+            --verbose
+            --tags "deploy"

@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy
-      - uses: saubermacherag/ansible-playbook-docker-action@v1.4
+        uses: saubermacherag/ansible-playbook-docker-action@v1.4
         with:
           playbookName: 'main.yml'
           inventoryFile: 'host.ini'

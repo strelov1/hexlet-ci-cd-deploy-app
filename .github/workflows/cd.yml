@@ -9,6 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy
-        uses: tomasnorre/ansible-cli-action@0.0.5
+      - uses: saubermacherag/ansible-playbook-docker-action@v1.4
         with:
-          command: "make deploy"
+          playbookName: 'main.yml'
+          inventoryFile: 'host.ini'
+          verbosity: "vv"
